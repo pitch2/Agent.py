@@ -93,5 +93,4 @@ dico = {
 ```
 
 
-
-3h - Adrien Pichon - V1
+Adrien Pichon - V2
