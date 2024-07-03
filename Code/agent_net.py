@@ -1,15 +1,4 @@
 import subprocess
-import mysql.connector
-
-
-#Connexion à la BDD
-mydb = mysql.connector.connect(
-  host="localhost",
-  user="root",
-  password="",
-  database="agent"
-)
-
 
 def network ():
     #Informations que nous voulons récupérer (voir note pour comprendre)
@@ -40,17 +29,7 @@ def network ():
     return liste
         
 
-network_liste = network()
 
-# Envoie des données vers la BDD
-mycursor = mydb.cursor()
-sql = "INSERT INTO Network (Hostname, Domain, SerialNumber, Bios_Releasedate) VALUES (%s, %s, %s, %s)"
-val = (network_liste[0], network_liste[1], network_liste[2], network_liste[3])
-mycursor.execute(sql, val)
-mydb.commit()
-
-
-print(mycursor.rowcount, "Validé")
 
 
 
