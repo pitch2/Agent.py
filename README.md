@@ -72,10 +72,10 @@ Faire une table pour partie réseau, hardware, organisation
 Pour hardware : 
 ```python
 dico = {
-    "Win32_Processor" : "Name",
-    "Win32_PhysicalMemory" : "__PROPERTY_COUNT",
-    "Win32_BaseBoard" : "Product",
-    "Win32_DiskDrive" : "Model",
+	"Win32_Processor" : "Name",
+	"Win32_PhysicalMemory" : "__PROPERTY_COUNT",
+	"Win32_BaseBoard" : "Product",
+	"Win32_DiskDrive" : "Model",
 	"Win32_DiskDrive" : "Size",
 	"Win32_DiskDrive" : "Status",
 	"Win32_VideoController" : "VideoProcessor",
