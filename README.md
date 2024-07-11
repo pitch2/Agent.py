@@ -93,4 +93,10 @@ dico = {
 ```
 
 
-Adrien Pichon - V2
+
+**Versions** : 
+- V1. Base du code 
+- V1.2. Ajout de network
+- V1.5. Optimisation par dictionnaire
+ 
+Adrien Pichon - V1.5
