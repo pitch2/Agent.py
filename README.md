@@ -98,5 +98,9 @@ dico = {
 - V1. Base du code 
 - V1.2. Ajout de network
 - V1.5. Optimisation par dictionnaire
+
+**-> Feature** : 
+- Interface WEB, recherche par ID
+- Calcul d'espace dispo -> visulisation par graph WEB
  
 Adrien Pichon - V1.5
