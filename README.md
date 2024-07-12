@@ -107,10 +107,11 @@ commande = ["(Get-Volume -DriveLetter C | Select-Object -ExpandProperty SizeRema
 
 **Versions** : 
 - V1. Base du code 
-- V1.2. Ajout de network
+- V1.2. Ajout de l'agent *network*
 - V1.5. Optimisation par dictionnaire
+- V1.6. Ajout de l'agent *disk*
 
-**-> Feature** : 
+**-> Features** : 
 - Interface WEB, recherche par ID
 - Calcul d'espace dispo -> visulisation par graph WEB
 
