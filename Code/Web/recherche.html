@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAE</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <div class="container mx-auto p-4">
+        <form id="search-form" class="bg-white p-4 rounded shadow-md w-1/2 mx-auto mb-4">
+            <label for="hostname" class="block text-lg font-bold mb-2">Entrez le hostname :</label>
+            <input type="text" id="hostname" name="hostname" class="border px-4 py-2 mb-4 w-full" required>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Chercher</button>
+        </form>
+
+        <div id="info-container" class="bg-white p-4 rounded shadow-md w-1/2 mx-auto mb-4" style="display: none;">
+            <h2 class="text-xl font-bold mb-2">Informations du Système</h2>
+            <table class="min-w-full bg-white">
+                <tbody id="info-table">
+                    <!-- Dynamic content will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="chart-container" class="bg-white p-4 rounded shadow-md w-1/2 mx-auto" style="display: none;">
+            <canvas id="diskChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Fonction pour récupérer les données depuis recherche.php
+        async function fetchDiskData(hostname) {
+            try {
+                const response = await fetch(`recherche.php?hostname=${hostname}`);
+                const data = await response.json();
+                if (data.error) {
+                    console.error('Erreur:', data.error);
+                    return [];
+                }
+                return data;
+            } catch (error) {
+                console.error('Erreur lors de la récupération des données :', error);
+                return [];
+            }
+        }
+
+        // Fonction pour créer le graphique à secteurs
+        async function createPieChart(data) {
+            if (data.length > 0) {
+                const adrienData = data[0];
+                const usedSize = adrienData.Buzy_Size;
+                const freeSize = adrienData.Remaining;
+
+                const ctx = document.getElementById('diskChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Utilisé', 'Libre'],
+                        datasets: [{
+                            data: [usedSize, freeSize],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(75, 192, 192, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(75, 192, 192, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.raw || 0;
+                                        return `${label}: ${value} GB`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // Show the chart container
+                document.getElementById('chart-container').style.display = 'block';
+            } else {
+                console.error('Aucune donnée trouvée pour ce hostname');
+            }
+        }
+
+        // Fonction pour afficher les informations du système
+        function displaySystemInfo(data) {
+            const infoTable = document.getElementById('info-table');
+            infoTable.innerHTML = `
+                <tr><td class="border px-4 py-2 font-bold">Hostname</td><td class="border px-4 py-2">${data.Hostname}</td></tr>
+                <tr><td class="border px-4 py-2 font-bold">CPU</td><td class="border px-4 py-2">${data.CPU}</td></tr>
+                <tr><td class="border px-4 py-2 font-bold">GPU</td><td class="border px-4 py-2">${data.GPU}</td></tr>
+                <tr><td class="border px-4 py-2 font-bold">RAM</td><td class="border px-4 py-2">${data.RAM}</td></tr>
+                <tr><td class="border px-4 py-2 font-bold">BaseBoard</td><td class="border px-4 py-2">${data.BaseBoard}</td></tr>
+                <tr><td class="border px-4 py-2 font-bold">DiskDrive Model</td><td class="border px-4 py-2">${data.DiskDrive_Model}</td></tr>
+                <tr><td class="border px-4 py-2 font-bold">DiskDrive Size</td><td class="border px-4 py-2">${data.DiskDrive_Size}</td></tr>
+                <tr><td class="border px-4 py-2 font-bold">DiskDrive State</td><td class="border px-4 py-2">${data.DiskDrive_State}</td></tr>
+                <tr><td class="border px-4 py-2 font-bold">Domain</td><td class="border px-4 py-2">${data.Domain}</td></tr>
+                <tr><td class="border px-4 py-2 font-bold">Serial Number</td><td class="border px-4 py-2">${data.SerialNumber}</td></tr>
+                <tr><td class="border px-4 py-2 font-bold">BIOS Release Date</td><td class="border px-4 py-2">${data.Bios_Releasedate}</td></tr>
+            `;
+
+            // Show the info container
+            document.getElementById('info-container').style.display = 'block';
+        }
+
+        // Fonction pour gérer la soumission du formulaire
+        document.getElementById('search-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const hostname = document.getElementById('hostname').value;
+            const data = await fetchDiskData(hostname);
+            if (data.length > 0) {
+                const adrienData = data[0];
+                displaySystemInfo(adrienData);
+                createPieChart(data);
+            } else {
+                console.error('Aucune donnée trouvée pour ce hostname');
+            }
+        });
+    </script>
+</body>
+</html>
