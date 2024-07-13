@@ -113,3 +113,5 @@ commande = ["(Get-Volume -DriveLetter C | Select-Object -ExpandProperty SizeRema
 - V1.7.Interface WEB, recherche par Hostname
 - V1.8.Calcul d'espace dispo -> visulisation par graph WEB
 
+🛑 Une partie du code (partie Web a été corriger par Copilot)
+- Pichon Adrien
