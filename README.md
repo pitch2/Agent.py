@@ -2,12 +2,13 @@
 Get-WmiObject -Class Win32_DiskDrive
 ```
 Ici on liste toutes nos informations disponible (beaucoup)
-![[PsAgent-20240702221335274.webp]]
+![](https://raw.githubusercontent.com/pitch2/Agent.py/base/Source/PsAgent-20240702221335274.webp)
+
 Pour avoir un résultat intéressant on renvoie seulement ce dont l'on a besoin
 ```powershell
 Get-WmiObject -Class Win32_DiskDrive | Select-Object -Property Model -Unique | Format-Table -HideTableHeaders
 ```
-![[PsAgent-20240702221413698.webp]]
+![](https://raw.githubusercontent.com/pitch2/Agent.py/base/Source/PsAgent-20240702221413698.webp)
 Nous avons de la pollution avec des sauts de lignes... Donc ->
 ```python
 (((output.decode("utf-8").split("\r"))[1]).split("\n"))[1]
@@ -51,10 +52,11 @@ CREATE TABLE IF NOT EXISTS `disk` (
 ```
 
 Nous avons donc ça comme résultat
-![[PsAgent-20240702224846587.webp]]
+![](https://raw.githubusercontent.com/pitch2/Agent.py/base/Source/PsAgent-20240702224846587.webp)
 
 Deux noms de PC ne peuvent pas être identique : 
-![[PsAgent-20240702224955420.webp]]
+![](https://raw.githubusercontent.com/pitch2/Agent.py/base/Source/PsAgent-20240702224955420.webp)
+
 Sur un parc informatique c'est normalement basique
 
 
